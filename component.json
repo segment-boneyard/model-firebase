@@ -1,0 +1,16 @@
+{
+  "name": "model-firebase",
+  "repo": "segmentio/model-firebase",
+  "description": "Firebase adapter for component/model.",
+  "keywords": ["model", "firebase"],
+  "license": "MIT",
+  "version": "0.0.1",
+  "dependencies": {
+    "component/collection": "*"
+  },
+  "scripts": [
+    "index.js",
+    "statics.js",
+    "protos.js"
+  ]
+}
