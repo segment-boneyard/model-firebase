@@ -1,4 +1,3 @@
-
 var Collection = require('collection')
   , noop = function(){};
 
@@ -56,7 +55,7 @@ exports.get = function(id, fn){
   var self = this;
   this.firebase.child(id).once('value', function (snapshot) {
     var attrs = snapshot.val();
-    if (!attrs) return fn(new Error('no model'));
+    if (!attrs) return fn();
     var model = new self(attrs);
     fn(null, model);
   });
