@@ -41,18 +41,21 @@ function construct (model, attrs) {
 
 function toObject (model) {
 
-  var out = {};
+  return function() {
 
-  for(var name in this) {
-    if(this.hasOwnProperty(name) &&
-      typeof this[name] !== 'function' &&
-      !model.model.attrs[name].options.noSync) {
+    var out = {};
 
-      out[name] = typeof this[name].toObject === 'function' ?
-                  this[name].toObject.apply(this[name], arguments) :
-                  this[name];
+    for(var name in this) {
+      if(this.hasOwnProperty(name) &&
+        typeof this[name] !== 'function' &&
+        !model.model.attrs[name].noSync) {
+
+        out[name] = typeof this[name].toObject === 'function' ?
+                    this[name].toObject.apply(this[name], arguments) :
+                    this[name];
+      }
     }
-  }
 
-  return out;
+    return out;
+  };
 }
