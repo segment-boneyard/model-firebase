@@ -61,7 +61,7 @@ exports.save  = function (fn) {
   if (!this.isValid()) return fn(new Error('validation failed'));
   this.model.emit('saving', this);
   this.emit('saving');
-  firebase.set(self.attrs, function (err) {
+  firebase.set(self.attrs.toObject(), function (err) {
     if (err) return fn(err);
     self.dirty = {};
     self.model.emit('save', self);
@@ -84,7 +84,7 @@ exports.update = function (fn) {
   if (!this.isValid()) return fn(new Error('validation failed'));
   this.model.emit('saving', this);
   this.emit('saving');
-  firebase.update(self.attrs, function (err) {
+  firebase.update(self.attrs.toObject(), function (err) {
     if (err) return fn(err);
     self.dirty = {};
     self.model.emit('save', self);

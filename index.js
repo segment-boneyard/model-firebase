@@ -22,6 +22,9 @@ module.exports = function (url) {
  */
 
 function construct (model, attrs) {
+
+  attrs.toObject = toObject;
+
   model.firebase().on('value', function (snapshot) {
     var attrs = snapshot.val();
     if (attrs) {
@@ -30,4 +33,24 @@ function construct (model, attrs) {
       model.emit('update');
     }
   });
+}
+
+/**
+ * Make a firebase friendly object for storage
+ */
+
+function toObject () {
+
+  var out = {};
+
+  for(var name in this) {
+    if(this.hasOwnProperty(name) && typeof this[name] !== 'function') {
+
+      out[name] = typeof this[name].toObject === 'function' ?
+                  this[name].toObject.apply(this[name], arguments) :
+                  this[name];
+    }
+  }
+
+  return out;
 }
