@@ -24,6 +24,10 @@ module.exports = function (url) {
 function construct (model, attrs) {
   model.firebase().on('value', function (snapshot) {
     var attrs = snapshot.val();
-    if (attrs) model.set(attrs);
+    if (attrs) {
+      model.set(attrs);
+      model.model.emit('update', model);
+      model.emit('update');
+    }
   });
 }
