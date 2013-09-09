@@ -22,8 +22,40 @@ module.exports = function (url) {
  */
 
 function construct (model, attrs) {
+
+  attrs.toObject = toObject(model);
+
   model.firebase().on('value', function (snapshot) {
     var attrs = snapshot.val();
-    if (attrs) model.set(attrs);
+    if (attrs) {
+      model.set(attrs);
+      model.model.emit('update', model);
+      model.emit('update');
+    }
   });
+}
+
+/**
+ * Make a firebase friendly object for storage
+ */
+
+function toObject (model) {
+
+  return function() {
+
+    var out = {};
+
+    for(var name in this) {
+      if(this.hasOwnProperty(name) &&
+        typeof this[name] !== 'function' &&
+        !model.model.attrs[name].noSync) {
+
+        out[name] = typeof this[name].toObject === 'function' ?
+                    this[name].toObject.apply(this[name], arguments) :
+                    this[name];
+      }
+    }
+
+    return out;
+  };
 }
